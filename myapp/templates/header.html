@@ -1,0 +1,77 @@
+<html>
+    <head>
+        {% load static %}
+    </head>
+    <body>
+      
+     
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="logo"><a href="index.html"><img src="{% static 'images/logo.png'%}"></a></div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+               <ul class="navbar-nav mr-auto">
+                  <li class="nav-item active">
+                     <a class="nav-link" href="/index/">Home</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="/health/">About us</a>
+                  </li>
+        
+                  <li class="nav-item">
+                     <a class="nav-link" href="/sample/">Sample</a>
+                  </li>
+        
+                  
+                  
+                  {% if user.is_authenticated%}
+                  
+                  <li class="nav-item">
+                     <a class="nav-link"  href="/signout">Sign OUT</a>
+                  </li>
+                  {% else %}        
+                  <li class="nav-item">
+                     <a  class="nav-link" href="/choice/">Sign UP</a>
+                  </li>
+                  <li class="nav-item">
+                     <a  class="nav-link" href="/choice1/">Log IN</a>
+                  </li>
+                  {% endif %}
+                  
+                     <li class="nav-item">
+                        <a class="nav-link" href="/contact/">Contact Us</a>
+                     </li>
+               </ul>
+            </div>
+         </nav>
+         {% if user.is_authenticated %}
+         <h3>Welcome {{firstname}}</h3>
+         {% endif %}
+         {% block content %}
+      
+
+          {% endblock %}
+
+        
+        
+        
+         
+         <!-- copyright section end -->
+         <!-- Javascript files-->
+         <script src="{%static 'js/jquery.min.js' %} "></script>
+         <script src="{%static 'js/popper.min.js' %}"></script>
+         <script src="{%static 'js/bootstrap.bundle.min.js' %}"></script>
+         <script src="{%static 'js/jquery-3.0.0.min.js' %}"></script>
+         <script src="{%static 'js/plugin.js' %}"></script>
+         <!-- sidebar -->
+         <script src="{%static 'js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+         <script src="{%static 'js/custom.js' %}"></script>
+         <!-- javascript -->
+         <script src="{%static 'js/owl.carousel.js' %}"></script>
+         <script src="{%static 'https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js' %}"></script>
+    </body>
+</html>
+
+
