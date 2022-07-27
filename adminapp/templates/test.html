@@ -1,0 +1,393 @@
+<html>
+{% load static %}
+
+<head>
+  <!-- bootstrap css -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+  <!-- style css -->
+  <link rel="stylesheet" href="{% static 'css/style.css'%}">
+  <!-- Responsive-->
+  <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+  <!-- fevicon -->
+  <link rel="icon" href="{%static 'images/fevicon.png' %}" type="image/gif" />
+  <!-- Scrollbar Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/jquery.mCustomScrollbar.min.css'%}">
+  <!-- Tweaks for older IEs-->
+
+  <!-- owl stylesheets -->
+  <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+  <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css '
+    media="screen">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<style>
+  body {
+    color: #404E67;
+    background: #F5F7FA;
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  .table-wrapper {
+    width: 700px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+  }
+
+  .table-title {
+    padding-bottom: 10px;
+    margin: 0 0 10px;
+  }
+
+  .table-title h2 {
+    margin: 6px 0 0;
+    font-size: 22px;
+  }
+
+  .table-title .add-new {
+    float: right;
+    height: 30px;
+    font-weight: bold;
+    font-size: 12px;
+    text-shadow: none;
+    min-width: 100px;
+    border-radius: 50px;
+    line-height: 13px;
+  }
+
+  .table-title .add-new i {
+    margin-right: 4px;
+  }
+
+  table.table {
+    table-layout: fixed;
+  }
+
+  table.table tr th,
+  table.table tr td {
+    border-color: #e9e9e9;
+  }
+
+  table.table th i {
+    font-size: 13px;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+
+  table.table th:last-child {
+    width: 100px;
+  }
+
+  table.table td a {
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 5px;
+    min-width: 24px;
+  }
+
+  table.table td a.add {
+    color: #27C46B;
+  }
+
+  table.table td a.edit {
+    color: #FFC107;
+  }
+
+  table.table td a.delete {
+    color: #E34724;
+  }
+
+  table.table td i {
+    font-size: 19px;
+  }
+
+  table.table td a.add i {
+    font-size: 24px;
+    margin-right: -1px;
+    position: relative;
+    top: 3px;
+  }
+
+  table.table .form-control {
+    height: 32px;
+    line-height: 32px;
+    box-shadow: none;
+    border-radius: 2px;
+  }
+
+  table.table .form-control.error {
+    border-color: #f50000;
+  }
+
+  table.table td .add {
+    display: none;
+  }
+</style>
+<script>
+  $(document).ready(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+    var actions = $("table td:last-child").html();
+    // Append table with add row form on add new button click
+    $(".add-new").click(function () {
+      $(this).attr("disabled", "disabled");
+      var index = $("table tbody tr:last-child").index();
+      var row = '<tr>' +
+        '<td><input type="text" class="form-control" name="name" id="name" placeholder="enter the value"></td>' +
+        '<td><input type="number" class="form-control" name="in_gram" id="in_gram" placeholder="enter the value"></td>' +
+        '<td><input type="number" class="form-control" name="in_moles" id="in_moles" placeholder="enter the value"></td>' +
+        '<td>' + actions + '</td>' +
+        '</tr>';
+      $("table").append(row);
+      $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+    // Add row on add button click
+    $(document).on("click", ".add", function () {
+      var empty = false;
+      var input = $(this).parents("tr").find('input[type="text"]');
+      input.each(function () {
+        if (!$(this).val()) {
+          $(this).addClass("error");
+          empty = true;
+        } else {
+          $(this).removeClass("error");
+        }
+      });
+      $(this).parents("tr").find(".error").first().focus();
+      if (!empty) {
+        input.each(function () {
+          $(this).parent("td").html($(this).val());
+        });
+        $(this).parents("tr").find(".add, .edit").toggle();
+        $(".add-new").removeAttr("disabled");
+      }
+    });
+    // Edit row on edit button click
+    $(document).on("click", ".edit", function () {
+      $(this).parents("tr").find("td:not(:last-child)").each(function () {
+        $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
+      });
+      $(this).parents("tr").find(".add, .edit").toggle();
+      $(".add-new").attr("disabled", "disabled");
+    });
+    // Delete row on delete button click
+    $(document).on("click", ".delete", function () {
+      $(this).parents("tr").remove();
+      $(".add-new").removeAttr("disabled");
+    });
+  });
+</script>
+
+
+<body>
+  {% for i in sam %}
+  <div class='col-12' style="font-size:20px;">
+    <ul class="list-group">
+      <li class="list-group-item  list-group-item-primary"><b>Sample id</b> : {{i.id}}</li>
+      <li class="list-group-item"><b>Sample name</b> : {{i.samplename}}</li>
+      <li class="list-group-item"><b>Sample date</b> : {{i.sampledate}}</li>
+      <li class="list-group-item"><b>Sample location</b> : {{i.samplelocation}}</li>
+  </div>
+  {% endfor %}
+
+
+
+  {% comment %} --------------------------------- {% endcomment %}
+  <form class="container my-5">
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="sample_name">Sample Name</label>
+        <input type="text" class="form-control" id="sample_name" requried name="sample_name"
+          placeholder="Enter the name of the Sample">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="sample_location">Sample Location</label>
+        <input type="text" class="form-control" id="sample_location" requried name="sample_location"
+          placeholder="Enter the location">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="sample_dis">Sample Discription</label>
+      <input type="text" class="form-control" id="sample_dis" name="sample_dis" placeholder="Give some discription">
+    </div>
+    <div class="form-group">
+      <label for="inputAddress2">Address 2</label>
+      <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-4">
+
+        <select id="sample_matrix" name="sample_matrix" class="form-control">
+          <option selected>Sample Matrix</option>
+          <option>Drinking H20</option>
+          <option>Surface H20</option>
+          <option>Waste H20</option>
+          <option>Solid</option>
+          <option>Glycol</option>
+          <option>LTE E.coil</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+
+        <select id="sample_system" name="sample_system" class="form-control">
+          <option selected>Types of System</option>
+          <option>Public Water System</option>
+          <option>Private Well</option>
+          <option>Waste water Treatment Plant</option>
+          <option>Other</option>
+
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+
+        <select id="sample_sampling" name="sample_sampling" class="form-control" ">
+                      <option selected>Reason for Sampl</option>
+                    <option>Routin</option>
+                    <option>NMED Monitor</option>
+                    <option>Industrial purpose</option>
+                    <option>special</option>
+                    <option>Reapeat Sample</option>
+                    
+                  </select>
+                </div>
+            </div>
+    <div class=" row">
+          <legend class="col-form-label col-sm-2 pt-0">Disinfection</legend>
+          <div class="col-sm-10">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
+              <label class="form-check-label" for="gridRadios1">
+                Yes
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+              <label class="form-check-label" for="gridRadios2">
+                No
+              </label>
+            </div>
+
+          </div>
+      </div>
+      <div class="form-row my-3">
+        <legend class="col-form-label col-sm-2 pt-0">Test Cat1</legend>
+        <div class="form-group col-md-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="testcat1_1">
+            <label class="form-check-label" for="testcat1_1">
+              Total Coliform MMO-MUG
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="testcat1_2">
+            <label class="form-check-label" for="testcat1_2">
+              Groud Water rule
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="testcat1_3">
+            <label class="form-check-label" for="testcat1_3">
+              Heterotrtophic(HPC)
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="testcat1_4">
+            <label class="form-check-label" for="testcat1_4">
+              E.Coil Count Wastewater QuantiTray
+            </label>
+          </div>
+        </div>
+        <legend class="col-form-label col-sm-2 pt-0">Test Cat2</legend>
+
+        <div class="form-group col-md-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+            <label class="form-check-label" for="defaultCheck1">
+              Fecal coliform Mpn
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+            <label class="form-check-label" for="defaultCheck2">
+              EC-MUG MPN
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+            <label class="form-check-label" for="defaultCheck2">
+              Enterococci-QuantiTray
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+            <label class="form-check-label" for="defaultCheck2">
+              Iron And Sulfur Bacteria
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="table-wrapper">
+          <div class="table-title">
+            <div class="row">
+              <div class="col-sm-8">
+                <h2>Contaminants <b>Details</b></h2>
+              </div>
+              <div class="col-sm-4">
+                <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
+              </div>
+            </div>
+          </div>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>in gram</th>
+                <th>in moles</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                  <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                  <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                  <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                </td>
+              </tr>
+             
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  <script src="{%static 'js/jquery.min.js' %} "></script>
+  <script src="{%static 'js/popper.min.js' %}"></script>
+  <script src="{%static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{%static 'js/jquery-3.0.0.min.js' %}"></script>
+  <script src="{%static 'js/plugin.js' %}"></script>
+  <!-- sidebar -->
+  <script src="{%static 'js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+  <script src="{%static 'js/custom.js' %}"></script>
+  <!-- javascript -->
+  <script src="{%static 'js/owl.carousel.js' %}"></script>
+  <script src='https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js'></script>
+</body>
+
+
+</html>

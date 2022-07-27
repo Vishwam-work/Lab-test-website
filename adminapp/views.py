@@ -6,6 +6,8 @@ from adminapp.models import Admin_signup
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
+from myapp.models import Sample
+from myapp.form import Sampleinput
 
 # Create your views here.
 @csrf_exempt
@@ -49,6 +51,11 @@ def admin_signup(request):
         context={'form':form}
         return render(request,'admin_signup.html',context)
 def table(request):
-    return render(request,"table.html")
+    form = Sample.objects.all()
+    return render(request,"table.html",{'form':form})
 def user(request):
     return render(request,"user.html")
+def test(request,id):
+    sam = Sample.objects.filter(id=id)
+    
+    return render(request,"test.html",{'sam':sam})
