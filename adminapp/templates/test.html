@@ -22,8 +22,14 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.2/dist/chart.min.js"></script>   
+ 
+
 </head>
 <style>
   body {
@@ -130,60 +136,44 @@
   }
 </style>
 <script>
+  
+
+
+
+
+
+
+
+  
   $(document).ready(function () {
-    $('[data-toggle="tooltip"]').tooltip();
-    var actions = $("table td:last-child").html();
-    // Append table with add row form on add new button click
-    $(".add-new").click(function () {
-      $(this).attr("disabled", "disabled");
-      var index = $("table tbody tr:last-child").index();
-      var row = '<tr>' +
-        '<td><input type="text" class="form-control" name="name" id="name" placeholder="enter the value"></td>' +
-        '<td><input type="number" class="form-control" name="in_gram" id="in_gram" placeholder="enter the value"></td>' +
-        '<td><input type="number" class="form-control" name="in_moles" id="in_moles" placeholder="enter the value"></td>' +
-        '<td>' + actions + '</td>' +
-        '</tr>';
-      $("table").append(row);
-      $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
-      $('[data-toggle="tooltip"]').tooltip();
-    });
-    // Add row on add button click
-    $(document).on("click", ".add", function () {
-      var empty = false;
-      var input = $(this).parents("tr").find('input[type="text"]');
-      input.each(function () {
-        if (!$(this).val()) {
-          $(this).addClass("error");
-          empty = true;
-        } else {
-          $(this).removeClass("error");
-        }
+
+    $('.testclass1').click(function () {
+      var text = "";
+      $('.testclass1:checked').each(function () {
+        text += $(this).val() + ","
       });
-      $(this).parents("tr").find(".error").first().focus();
-      if (!empty) {
-        input.each(function () {
-          $(this).parent("td").html($(this).val());
-        });
-        $(this).parents("tr").find(".add, .edit").toggle();
-        $(".add-new").removeAttr("disabled");
-      }
-    });
-    // Edit row on edit button click
-    $(document).on("click", ".edit", function () {
-      $(this).parents("tr").find("td:not(:last-child)").each(function () {
-        $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
-      });
-      $(this).parents("tr").find(".add, .edit").toggle();
-      $(".add-new").attr("disabled", "disabled");
-    });
-    // Delete row on delete button click
-    $(document).on("click", ".delete", function () {
-      $(this).parents("tr").remove();
-      $(".add-new").removeAttr("disabled");
+      text = text.substring(0, text.length - 1);
+      $('#test1').val(text);
+      console.log(text)
+
     });
   });
-</script>
+  $(document).ready(function () {
+    $('.testclass2').click(function () {
+      var text2 = "";
+      $('.testclass2:checked').each(function () {
+        text2 += $(this).val() + ","
+      });
+      text2 = text2.substring(0, text2.length - 1);
+      $('#test2').val(text2);
+      console.log(text)
 
+
+    });
+  });
+
+  
+</script>
 
 <body>
   {% for i in sam %}
@@ -199,8 +189,13 @@
 
 
   {% comment %} --------------------------------- {% endcomment %}
-  <form class="container my-5">
-    <div class="form-row">
+  <div class="container col-sm-8 text-center">
+    <h1 style="font-size:xx-large; margin-top: 20px;">Chemical Test Analysis <b>Form</b></h1>
+  </div>
+  <form method="POST" class="container my-5" enctype="multipart/form-data">
+    {% csrf_token %}
+
+   <div class="form-row">
       <div class="form-group col-md-6">
         <label for="sample_name">Sample Name</label>
         <input type="text" class="form-control" id="sample_name" requried name="sample_name"
@@ -216,10 +211,7 @@
       <label for="sample_dis">Sample Discription</label>
       <input type="text" class="form-control" id="sample_dis" name="sample_dis" placeholder="Give some discription">
     </div>
-    <div class="form-group">
-      <label for="inputAddress2">Address 2</label>
-      <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-    </div>
+
     <div class="form-row">
       <div class="form-group col-md-4">
 
@@ -247,7 +239,7 @@
       </div>
       <div class="form-group col-md-4">
 
-        <select id="sample_sampling" name="sample_sampling" class="form-control" ">
+        <select id="sample_sampling" name="sample_sampling" class="form-control" >
                       <option selected>Reason for Sampl</option>
                     <option>Routin</option>
                     <option>NMED Monitor</option>
@@ -261,121 +253,100 @@
     <div class=" row">
           <legend class="col-form-label col-sm-2 pt-0">Disinfection</legend>
           <div class="col-sm-10">
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
+             <div class="form-check">
+              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="yes" >
               <label class="form-check-label" for="gridRadios1">
                 Yes
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="no">
               <label class="form-check-label" for="gridRadios2">
                 No
               </label>
             </div>
 
-          </div>
+          </div> 
+          
       </div>
       <div class="form-row my-3">
         <legend class="col-form-label col-sm-2 pt-0">Test Cat1</legend>
         <div class="form-group col-md-4">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="testcat1_1">
-            <label class="form-check-label" for="testcat1_1">
-              Total Coliform MMO-MUG
-            </label>
+            <input class="form-check-input testclass1" type="checkbox" value="Total Coliform MMO-MUG" >
+             
+                Total Coliform MMO-MUG
+            
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="testcat1_2">
-            <label class="form-check-label" for="testcat1_2">
+            <input class="form-check-input testclass1" type="checkbox" value="Groud Water rule">
+             
               Groud Water rule
-            </label>
+           
+
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="testcat1_3">
-            <label class="form-check-label" for="testcat1_3">
-              Heterotrtophic(HPC)
-            </label>
+            <input class="form-check-input testclass1" type="checkbox" value="Heterotrtophic(HPC)">
+             
+                Heterotrtophic(HPC)
+            
+
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="testcat1_4">
-            <label class="form-check-label" for="testcat1_4">
-              E.Coil Count Wastewater QuantiTray
-            </label>
+            <input class="form-check-input testclass1" type="checkbox" value="E.Coil Count Wastewater QuantiTray">
+          
+                E.Coil Count Wastewater QuantiTray
+              
           </div>
         </div>
+        <input type="text" readonly id="test1" class="form-control" name="test1">
         <legend class="col-form-label col-sm-2 pt-0">Test Cat2</legend>
 
         <div class="form-group col-md-4">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-            <label class="form-check-label" for="defaultCheck1">
-              Fecal coliform Mpn
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-            <label class="form-check-label" for="defaultCheck2">
-              EC-MUG MPN
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-            <label class="form-check-label" for="defaultCheck2">
-              Enterococci-QuantiTray
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-            <label class="form-check-label" for="defaultCheck2">
-              Iron And Sulfur Bacteria
-            </label>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="table-wrapper">
-          <div class="table-title">
-            <div class="row">
-              <div class="col-sm-8">
-                <h2>Contaminants <b>Details</b></h2>
-              </div>
-              <div class="col-sm-4">
-                <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
-              </div>
-            </div>
-          </div>
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>in gram</th>
-                <th>in moles</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                  <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                  <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                  <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
-                </td>
-              </tr>
+            <input class="form-check-input testclass2" type="checkbox" value="Fecal coliform Mpn">
              
-            </tbody>
-          </table>
+                Fecal coliform Mpn
+        
+          </div>
+          <div class="form-check">
+            <input class="form-check-input testclass2" type="checkbox"  value="EC-MUG MPN" >
+          
+              EC-MUG MPN
+            
+          </div>
+          <div class="form-check">
+            <input class="form-check-input testclass2" type="checkbox"  value="Enterococci-QuantiTray">
+          
+                Enterococci-QuantiTray
+          </div>
+          <div class="form-check">
+            <input class="form-check-input testclass2" type="checkbox"  value="Iron And Sulfur Bacteria">
+              
+              
+                Iron And Sulfur Bacteria
+              
+
+          </div>
+          
         </div>
-      </div>
+        <input type="text" readonly id="test2" class="form-control" name="test2">
+      </div> 
 
 
+  
+    
+    
 
-
-      <button type="submit" class="btn btn-primary">Submit</button>
+      
+    
+    <button type="submit" class="btn btn-primary">Submit</button>
   </form>
+    
+
+
+
+      
   <script src="{%static 'js/jquery.min.js' %} "></script>
   <script src="{%static 'js/popper.min.js' %}"></script>
   <script src="{%static 'js/bootstrap.bundle.min.js' %}"></script>

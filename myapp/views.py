@@ -10,6 +10,7 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 from .form import Sampleinput
 from . tokens import generate_token
@@ -142,6 +143,7 @@ def choice1(request):
     return render(request,'choice1.html')
 
 # @csrf_exempt
+@login_required(login_url="signin")
 def sample(request):
     if request.method == 'POST':
         form = Sampleinput(request.POST)

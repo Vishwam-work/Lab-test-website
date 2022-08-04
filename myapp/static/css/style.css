@@ -467,8 +467,8 @@ button {
     background-color: #252525;
     color: white;
     font-size: 16px;
-    padding: 10px 10px;
-    border-radius: 100px;
+    padding: 15px 15px;
+    /* border-radius: 100px; */
 }
 
 .image_main_1 {
@@ -477,7 +477,7 @@ button {
 }
 
 .image_main_1:hover .image {
-    background-color: rgba(27, 236, 222, 0.5);
+    background-color: rgba(27, 236, 222, 0.164);
 }
 
 .image_main_1:hover .middle {
@@ -980,7 +980,7 @@ input.Enter_text::placeholder {
 }
 
 .copyright_text a:hover {
-    color: #19e9d9;
+    color: #19e9d84f;
 }
 
 .margin_90 {

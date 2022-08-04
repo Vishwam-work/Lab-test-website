@@ -2,12 +2,15 @@ from django.shortcuts import render,redirect
 
 from adminapp.admin_signup import Adminsignup
 
-from adminapp.models import Admin_signup
+from adminapp.models import Admin_signup,SampleTest
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from myapp.models import Sample
 from myapp.form import Sampleinput
+from .analysis import SampleAnalysis
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 @csrf_exempt
@@ -55,7 +58,33 @@ def table(request):
     return render(request,"table.html",{'form':form})
 def user(request):
     return render(request,"user.html")
+
+
 def test(request,id):
     sam = Sample.objects.filter(id=id)
     
-    return render(request,"test.html",{'sam':sam})
+    if request.method=="POST":
+        form=SampleAnalysis(request.POST)
+        if request.POST.get('sample_matrix') and request.POST.get('sample_system') and request.POST.get('sample_sampling') and request.POST.get('test1') and request.POST.get('test2'):
+            matrix=SampleTest()
+            
+            matrix.sample_matrix=request.POST.get('sample_matrix')
+            matrix.sample_system=request.POST.get('sample_system')
+            matrix.sample_sampling=request.POST.get('sample_sampling')
+            matrix.test1=request.POST.get('test1')
+            matrix.test2=request.POST.get('test2')
+        try:
+            form.save()
+            # matrix.save()
+            return redirect('/table')
+        except:
+            pass
+    else:
+        form=SampleAnalysis()
+    context={
+        'sam':sam,
+    }
+    return render(request,"test.html",context)
+def chart(request,id):
+    sam=SampleTest.objects.filter(id=id)
+    return render(request,'chart.html',{'sam':sam})
