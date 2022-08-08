@@ -38,7 +38,9 @@ def admin_signin(request):
 
 
         
-       
+def admin_signout(request):
+    logout(request)
+    return redirect('table')
 
 def admin_signup(request):
     if request.method=="POST":

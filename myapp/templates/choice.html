@@ -18,14 +18,30 @@
    <link rel="stylesheet" href="{% static 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css '%}" media="screen">
 
         <style>
+                body{
+                    background : url("{%static 'images/back7.jpg' %}");
+                background-position: center center;
+                width: 100%;
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-attachment: fixed;
+            }
             .choice_box{
                 position:absolute;
                 top:50%;
                 left:50%;
                 transform:translate(-50%,-50%);
-                border:0px;
+                
                 text-align:center;
+                width: 50%;
+                padding: 5% 10%;
+                border :2px solid black;
+                border-radius:10px;
+                background-color: rgba(0, 0, 0, 0.212);
+               box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px; 
             
+              
+             
                     
             }
             .choice_btn{
@@ -34,19 +50,33 @@
             .choice_btn a{
                 width:100%;
             }
-
+            #heading{
+    color:white;
+    font-size: 40px;
+    font-weight: 400;
+    position: absolute;
+    top: 0;
+    left: 25%;
+    
+}
         </style>
 </head>
 <body>
-    <div class="choice_box">
-        <div class="choice_btn">
-            <a class="btn btn-primary" href="/admin_signup/">Admin</a>
-        </div>
-        <div class="choice_btn">
+    
 
-            <a class="btn btn-primary" href="/signup/">User</a>
+        <div class="choice_box">
+        <p id='heading'>Choose to Sigin up </p>
+
+            <div class="choice_btn">
+                <a class="btn btn-outline-light btn-lg m-2 bg-dark text-light" href="/admin_signup/">Lab member</a>
+            </div>
+            <div class="choice_btn">
+                
+                <a class="btn btn-outline-light btn-lg m-2 bg-dark text-light" href="/signup/">User</a>
+            </div>
         </div>
-    </div>
+        
+ 
     <!-- Javascript files-->
 <script src="{%static 'js/jquery.min.js' %} "></script>
 <script src="{%static 'js/popper.min.js' %}"></script>

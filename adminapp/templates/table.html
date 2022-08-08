@@ -1,4 +1,6 @@
 <html>
+    {% extends 'admin_header.html' %}
+    {% block content %}
     {% load static %}
 <head>
     <link rel="stylesheet" href="{% static 'css/table.css'%}">
@@ -113,6 +115,6 @@
 <script src="https://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script> 
-
+{% endblock %}
 </body>
 </html>
